@@ -1,0 +1,71 @@
+{
+    "name": "qubid",
+    "version": "1.0.0",
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "description": "Unique ID generator for TypeScript",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "migrate-eslint": "npx @eslint/migrate-config .eslintrc.js",
+        "lint": "npm run migrate-eslint && eslint src/**/*.ts",
+        "format": "prettier --write src/**/*.ts",
+        "prepublishOnly": "npm run build",
+        "release": "npm run build && npm run test && changeset publish -r --access public && changeset tag"
+    },
+    "keywords": [
+        "unique",
+        "id",
+        "generator",
+        "typescript",
+        "k-sorted",
+        "distributed"
+    ],
+    "bugs": {
+        "url": "https://github.com/wraith4081/qubid/issues"
+    },
+    "homepage": "https://github.com/wraith4081/qubid",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wraith4081/qubid.git"
+    },
+    "author": "wraith4081",
+    "license": "MIT",
+    "devDependencies": {
+        "@eslint/eslintrc": "^3.1.0",
+        "@eslint/js": "^9.14.0",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^16.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.13.0",
+        "@typescript-eslint/parser": "^8.13.0",
+        "eslint": "^9.14.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "jest": "^29.7.0",
+        "prettier": "^3.3.3",
+        "ts-jest": "^29.2.5",
+        "typescript": "^4.0.0"
+    },
+    "contributors": [
+        {
+            "name": "wraith4081",
+            "url": "https://github.com/wraith4081"
+        }
+    ],
+    "maintainers": [
+        {
+            "name": "wraith4081",
+            "url": "https://github.com/wraith4081"
+        }
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@changesets/cli": "^2.27.9"
+    }
+}
