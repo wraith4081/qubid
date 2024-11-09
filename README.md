@@ -66,17 +66,3 @@ console.log('IDs are sorted correctly:', isSorted);
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-````
-
-#### **`LICENSE`**
-
-Choose an appropriate license, e.g., MIT:
-
-```text
-MIT License
-
-Copyright (c) 2023 Your Name
-
-Permission is hereby granted, free of charge, to any person obtaining a copy...
-````
