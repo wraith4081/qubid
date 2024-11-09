@@ -1,5 +1,0 @@
----
-'qubid': major
----
-
-first release
