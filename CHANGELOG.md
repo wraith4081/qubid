@@ -1,5 +1,11 @@
 # qubid
 
+## 1.1.0
+
+### Minor Changes
+
+-   add timestamp extraction
+
 ## 1.0.1
 
 ### Patch Changes

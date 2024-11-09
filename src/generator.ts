@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { encodeBase62 } from './utils/encoding';
+import { decodeBase62, encodeBase62 } from './utils/encoding';
 import { generateMachineId } from './utils/machine-id';
 import { getHighPrecisionTimestamp } from './utils/timestamp';
 import { IdGeneratorOptions } from './types';
@@ -23,7 +23,14 @@ export class IdGenerator {
         this.machineId = generateMachineId(useMacAddress);
     }
 
-    generate(): string {
+    generate(getTimestamp?: false): string;
+    generate(getTimestamp?: true): {
+        id: string;
+        timestamp: Date;
+    };
+    generate(
+        getTimestamp: boolean = false
+    ): string | { id: string; timestamp: Date } {
         let timestamp = getHighPrecisionTimestamp();
 
         // Handle sequence counter and timestamp
@@ -63,6 +70,45 @@ export class IdGenerator {
         // Encode to Base62
         const uniqueId = encodeBase62(idBuffer, TOTAL_BITS);
 
+        if (getTimestamp) {
+            const timestampMillisecondsBigInt = timestamp / BigInt(1e3);
+            const timestampMillisecondsNumber = Number(
+                timestampMillisecondsBigInt
+            );
+
+            // Ensure the timestamp is within the safe integer range
+            if (!Number.isSafeInteger(timestampMillisecondsNumber)) {
+                throw new Error('Timestamp exceeds safe integer range');
+            }
+
+            return {
+                id: uniqueId,
+                timestamp: new Date(timestampMillisecondsNumber),
+            };
+        }
+
         return uniqueId;
+    }
+
+    extractTimestamp(id: string): Date {
+        const idValue = decodeBase62(id);
+
+        // Convert idValue back to a Buffer
+        const idHex = idValue.toString(16).padStart(ID_BYTE_LENGTH * 2, '0');
+        const idBuffer = Buffer.from(idHex, 'hex');
+
+        // Read the timestamp from the first 8 bytes
+        const timestampMicroseconds = idBuffer.readBigUInt64BE(0);
+
+        // Convert microseconds to milliseconds
+        const timestampMillisecondsBigInt = timestampMicroseconds / BigInt(1e3);
+        const timestampMillisecondsNumber = Number(timestampMillisecondsBigInt);
+
+        // Ensure the timestamp is within the safe integer range
+        if (!Number.isSafeInteger(timestampMillisecondsNumber)) {
+            throw new Error('Timestamp exceeds safe integer range');
+        }
+
+        return new Date(timestampMillisecondsNumber);
     }
 }
